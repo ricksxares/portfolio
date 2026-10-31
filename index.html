@@ -327,6 +327,24 @@ footer { padding-block: 24px 40px; display: flex; justify-content: space-between
   .nav .btn.sm { display: none; }
   .hero { padding-top: 32px; }
 }
+/* modelos em vídeo */
+.mrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; align-items: start; max-width: 1000px; margin: 0 auto; perspective: 1200px; }
+.mphone { margin: 0; display: grid; gap: 16px; justify-items: center; will-change: transform; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.mphone:nth-child(odd) { margin-top: 48px; }
+.mbezel { width: 100%; border-radius: 42px; padding: 9px; }
+.mbezel video { display: block; width: 100%; height: auto; aspect-ratio: var(--ar); object-fit: cover; border-radius: 34px; background: #0b0b12; }
+.hint { position: absolute; left: 24px; bottom: 24px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 12px; border-radius: 999px; background: rgba(10,14,30,.62); color: #fff; font-size: 12.5px; font-weight: 500; -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5); border: 1px solid rgba(255,255,255,.22); opacity: 0; transition: opacity .4s; }
+.hint.on { opacity: 1; }
+.hint i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent); }
+.hint b { font-weight: 500; }
+.hint.sw { animation: hintin .5s cubic-bezier(.2,.8,.2,1); }
+@keyframes hintin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.mcap { font-size: 14.5px; color: var(--muted); text-align: center; }
+@media (max-width: 960px) {
+  .mrow { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; margin-inline: -16px; padding: 4px 16px 18px; max-width: none; -webkit-overflow-scrolling: touch; }
+  .mphone { flex: 0 0 min(74%, 320px); scroll-snap-align: center; }
+  .mphone:nth-child(odd) { margin-top: 0; }
+}
 /* WebGL, lente de vidro */
 #gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; display: none; }
 html.gl #gl { display: block; }
@@ -442,6 +460,7 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
       <a class="brand" href="#inicio">Ricardo Soares<i>.</i></a>
       <nav class="menu" aria-label="Seções">
         <a href="#vitrine">Vitrine</a>
+        <a href="#modelos">Modelos</a>
         <a href="#ao-vivo">Ao vivo</a>
         <a href="#sobre">Sobre</a>
         <a href="#processo">Processo</a>
@@ -535,6 +554,38 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
 </div>
 
 <div class="wrap">
+  <section id="modelos">
+    <div class="sec-head rv">
+      <p class="kicker">Modelos</p>
+      <h2>Designs que eu crio, em movimento.</h2>
+      <p>Trechos de sites que já desenvolvi, mostrados sem identificar os clientes. Cada segmento ganha uma identidade própria.</p>
+    </div>
+    <div class="mrow rv" id="mrow">
+      <figure class="mphone">
+        <div class="mbezel glass">
+          <video muted loop playsinline autoplay preload="metadata" disablepictureinpicture poster="videos/poster-eventos.jpg" style="--ar:480/840" aria-label="Trecho de um site para DJ e eventos, com galeria de fotos que desliza" data-hint-for="eventos"><source src="videos/modelo-eventos.mp4" type="video/mp4"></video>
+          <span class="hint"><i></i><b></b></span>
+        </div>
+        <figcaption class="mcap">Site para DJ e eventos</figcaption>
+      </figure>
+      <figure class="mphone">
+        <div class="mbezel glass">
+          <video muted loop playsinline autoplay preload="metadata" disablepictureinpicture poster="videos/poster-festas.jpg" style="--ar:480/722" aria-label="Trecho de um site para festas e decoração, com portfólio em grade e escolha de pacotes" data-hint-for="festas"><source src="videos/modelo-festas.mp4" type="video/mp4"></video>
+          <span class="hint"><i></i><b></b></span>
+        </div>
+        <figcaption class="mcap">Site para festas e decoração</figcaption>
+      </figure>
+      <figure class="mphone">
+        <div class="mbezel glass">
+          <video muted loop playsinline autoplay preload="metadata" disablepictureinpicture poster="videos/poster-moda.jpg" style="--ar:480/810" aria-label="Trecho de um site para moda feminina, com vitrine de produtos que desliza" data-hint-for="moda"><source src="videos/modelo-moda.mp4" type="video/mp4"></video>
+          <span class="hint"><i></i><b></b></span>
+        </div>
+        <figcaption class="mcap">Site para moda feminina</figcaption>
+      </figure>
+    </div>
+    <p class="cap">Identidade e contatos dos clientes mantidos em sigilo.</p>
+  </section>
+
   <section id="ao-vivo">
     <div class="sec-head rv">
       <p class="kicker">Ao vivo</p>
@@ -1058,6 +1109,32 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
   hsSetup();
   addEventListener('scroll', function () { litUpdate(); hsUpdate(); }, { passive: true });
   litUpdate();
+
+  /* ---------- modelos em vídeo: reproduz ao aparecer, legendas indiretas ---------- */
+  var HINTS = { eventos: [[0, 'Galeria que desliza']], festas: [[0, 'Portfólio em grade'], [3.9, 'Escolha de pacotes']], moda: [[0, 'Vitrine que desliza']] };
+  $$('video[data-hint-for]').forEach(function (v) {
+    var hint = v.parentNode.querySelector('.hint'), label = hint.querySelector('b'), marks = HINTS[v.getAttribute('data-hint-for')] || [], cur = '';
+    function upd() {
+      var t = v.currentTime, txt = marks[0] ? marks[0][1] : '';
+      marks.forEach(function (m) { if (t >= m[0]) txt = m[1]; });
+      if (txt !== cur) { cur = txt; label.textContent = txt; hint.classList.remove('sw'); void hint.offsetWidth; hint.classList.add('sw'); }
+      hint.classList.add('on');
+    }
+    v.addEventListener('timeupdate', upd);
+    if (reduce) { v.removeAttribute('autoplay'); v.pause(); hint.classList.add('on'); label.textContent = marks[0] ? marks[0][1] : ''; return; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause(); }); }, { threshold: .25 }).observe(v);
+    } else { var p0 = v.play(); if (p0 && p0.catch) p0.catch(function () {}); }
+  });
+  if (fine && !reduce) {
+    $$('.mphone').forEach(function (m) {
+      m.addEventListener('pointermove', function (e) {
+        var r = m.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        m.style.transform = 'rotateY(' + (x * 10) + 'deg) rotateX(' + (y * -8) + 'deg) translateY(-4px)';
+      });
+      m.addEventListener('pointerleave', function () { m.style.transform = ''; });
+    });
+  }
 
   /* ---------- laço principal: shader, lente, faixa ---------- */
   var skw = $('#skw'), lastY = scrollY, sk = 0;
