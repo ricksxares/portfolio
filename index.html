@@ -443,9 +443,38 @@ footer { padding-block: 24px 40px; display: flex; justify-content: space-between
   .mk { grid-template-columns: 1fr; }
   .mk-pv { order: -1; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 80px); z-index: 6; }
   .mk-frame { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
-  .mk-screen { height: 300px; }
   .mk-modes { display: none; }
   .mk-device[data-mode="phone"] .mk-frame { width: 100%; border: 1px solid var(--glass-bd); border-radius: 22px; }
+}
+/* idioma */
+.lang { display: flex; gap: 2px; padding: 3px; border-radius: 999px; border: 1px solid var(--glass-bd); background: var(--glass); }
+.lang button { border: 0; background: transparent; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .04em; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 999px; color: var(--muted); transition: background-color .25s, color .25s; }
+.lang button:hover { color: var(--fg); }
+.lang button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+@media (max-width: 600px) {
+  .nav-r { gap: 6px; }
+  .lang button { min-width: 30px; height: 32px; font-size: 11.5px; padding: 0 4px; }
+  .nav { gap: 8px; padding-right: 6px; }
+}
+@media (max-width: 600px) {
+  .tag { top: 10px; font-size: 11px; line-height: 1.2; padding: 5px 9px; max-width: calc(50% - 16px); text-align: center; }
+  .tag.l { left: 10px; } .tag.r { right: 10px; }
+}
+@media (max-width: 380px) {
+  .nav { padding-left: 12px; }
+  .brand { font-size: 17px; }
+}
+@media (max-width: 960px) {
+  .mk-screen, .mk-device[data-mode="phone"] .mk-screen { height: clamp(200px, 32svh, 300px); }
+  .mk-grp, .mk-ctl input { scroll-margin-top: 380px; }
+  .mk-pv { top: calc(env(safe-area-inset-top, 0px) + 10px); }
+  .fab { transition: opacity .3s, transform .3s; }
+  html.in-mk .fab { opacity: 0; transform: scale(.7); pointer-events: none; }
+}
+@media (max-width: 960px) and (max-height: 520px) {
+  .mk-pv { position: static; }
+  .mk-screen, .mk-device[data-mode="phone"] .mk-screen { height: 320px; }
+  .mk-grp, .mk-ctl input { scroll-margin-top: 90px; }
 }
 /* modelos em vídeo */
 .mrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; align-items: start; max-width: 1000px; margin: 0 auto; perspective: 1200px; }
@@ -586,6 +615,11 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
         <a href="#servicos">Serviços</a>
       </nav>
       <div class="nav-r">
+        <div class="lang" role="group" aria-label="Idioma">
+          <button type="button" data-l="pt" lang="pt" aria-pressed="true" title="Português">PT</button>
+          <button type="button" data-l="es" lang="es" aria-pressed="false" title="Español">ES</button>
+          <button type="button" data-l="en" lang="en" aria-pressed="false" title="English">EN</button>
+        </div>
         <button class="theme" id="theme" type="button" aria-label="Alternar tema claro e escuro">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" style="fill:var(--fg)"/></svg>
         </button>
@@ -899,24 +933,77 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
 </a>
 
 <script>
+window.I18N = (function () {
+  var D = {"Desenvolvedor web": ["Desarrollador web", "Web developer"], "Modelos": ["Modelos", "Samples"], "Monte seu site": ["Arma tu sitio", "Build your site"], "Sobre": ["Sobre mí", "About"], "Processo": ["Proceso", "Process"], "Serviços": ["Servicios", "Services"], "Seções": ["Secciones", "Sections"], "Alternar tema claro e escuro": ["Cambiar entre tema claro y oscuro", "Switch between light and dark theme"], "Idioma": ["Idioma", "Language"], "Ricardo Soares · desenvolvedor web e empreendedor": ["Ricardo Soares · desarrollador web y emprendedor", "Ricardo Soares · web developer and entrepreneur"], "Crio sites modernos, rápidos e personalizados para empresas e negócios locais, com foco em design, responsividade e conversão.": ["Creo sitios web modernos, rápidos y personalizados para empresas y negocios locales, con foco en diseño, adaptación a cualquier pantalla y conversión.", "I build modern, fast, custom websites for companies and local businesses, focused on design, responsiveness and conversion."], "Quero um site para meu negócio": ["Quiero un sitio para mi negocio", "I want a website for my business"], "Ver na prática": ["Verlo en acción", "See it in action"], "Responsivo": ["Adaptable", "Responsive"], "Foco em conversão": ["Enfoque en conversión", "Conversion-focused"], "WhatsApp integrado": ["WhatsApp integrado", "WhatsApp integrated"], "Falar no WhatsApp": ["Hablar por WhatsApp", "Chat on WhatsApp"], "Sua Marca": ["Tu Marca", "Your Brand"], "Vitrine": ["Vitrina", "Showcase"], "O mesmo site, uma identidade para cada negócio.": ["El mismo sitio, una identidad para cada negocio.", "The same site, a different identity for each business."], "Escolha um tipo de negócio e veja cores, fontes e textos mudarem. Troque para celular e veja o layout se reorganizar.": ["Elige un tipo de negocio y mira cambiar colores, fuentes y textos. Cambia a celular y observa cómo se reorganiza el diseño.", "Pick a type of business and watch colors, fonts and text change. Switch to phone and see the layout rearrange."], "Exemplo de site mudando de identidade visual": ["Ejemplo de sitio que cambia de identidad visual", "Example of a site changing its visual identity"], "Escolha o tipo de negócio": ["Elige el tipo de negocio", "Choose the type of business"], "Tamanho da tela": ["Tamaño de pantalla", "Screen size"], "Computador": ["Computadora", "Desktop"], "Celular": ["Celular", "Phone"], "Exemplos ilustrativos com marcas fictícias.": ["Ejemplos ilustrativos con marcas ficticias.", "Illustrative examples with fictional brands."], "Designs que eu crio, em movimento.": ["Diseños que creo, en movimiento.", "Designs I create, in motion."], "Trechos de sites que já desenvolvi, mostrados sem identificar os clientes. Cada segmento ganha uma identidade própria.": ["Fragmentos de sitios que ya desarrollé, mostrados sin identificar a los clientes. Cada segmento tiene su propia identidad.", "Excerpts of sites I've already built, shown without identifying the clients. Each segment gets its own identity."], "Site para DJ e eventos": ["Sitio para DJ y eventos", "Website for DJs and events"], "Site para festas e decoração": ["Sitio para fiestas y decoración", "Website for parties and decor"], "Site para moda feminina": ["Sitio de moda femenina", "Website for women's fashion"], "Trecho de um site para DJ e eventos, com galeria de fotos que desliza": ["Fragmento de un sitio para DJ y eventos, con galería de fotos que se desliza", "Excerpt of a DJ and events website, with a sliding photo gallery"], "Trecho de um site para festas e decoração, com portfólio em grade e escolha de pacotes": ["Fragmento de un sitio para fiestas y decoración, con portafolio en cuadrícula y elección de paquetes", "Excerpt of a parties and decor website, with a grid portfolio and package selection"], "Trecho de um site para moda feminina, com vitrine de produtos que desliza": ["Fragmento de un sitio de moda femenina, con vitrina de productos que se desliza", "Excerpt of a women's fashion website, with a sliding product showcase"], "Identidade e contatos dos clientes mantidos em sigilo.": ["Identidad y contactos de los clientes en reserva.", "Client identities and contacts kept confidential."], "Galeria que desliza": ["Galería que se desliza", "Sliding gallery"], "Portfólio em grade": ["Portafolio en cuadrícula", "Grid portfolio"], "Escolha de pacotes": ["Elección de paquetes", "Package selection"], "Vitrine que desliza": ["Vitrina que se desliza", "Sliding showcase"], "Crie o seu e veja nascer na hora.": ["Crea el tuyo y míralo nacer al instante.", "Create yours and watch it come to life."], "Escolha o nome, o tipo de negócio, o estilo, a cor e os recursos. O site de exemplo muda ao vivo, e o resumo vai direto para o meu WhatsApp.": ["Elige el nombre, el tipo de negocio, el estilo, el color y los recursos. El sitio de ejemplo cambia en vivo y el resumen llega directo a mi WhatsApp.", "Choose the name, type of business, style, color and features. The sample site changes live, and the summary goes straight to my WhatsApp."], "Nome do seu negócio": ["Nombre de tu negocio", "Your business name"], "Tipo de negócio": ["Tipo de negocio", "Type of business"], "Estilo": ["Estilo", "Style"], "Cor principal": ["Color principal", "Main color"], "Recursos": ["Recursos", "Features"], "Ex.: Aurora Modas": ["Ej.: Aurora Modas", "E.g.: Aurora Modas"], "Site de exemplo montado com as suas escolhas": ["Sitio de ejemplo armado con tus elecciones", "Sample site built from your choices"], "Enviar meu site para o Ricardo": ["Enviar mi sitio a Ricardo", "Send my site to Ricardo"], "O site acima é só um exemplo visual. O projeto final é desenhado sob medida para o seu negócio.": ["El sitio de arriba es solo un ejemplo visual. El proyecto final se diseña a medida para tu negocio.", "The site above is just a visual example. The final project is custom-designed for your business."], "Minimalista": ["Minimalista", "Minimal"], "Vibrante": ["Vibrante", "Vibrant"], "Luxo": ["Lujo", "Luxury"], "Divertido": ["Divertido", "Playful"], "Galeria de fotos": ["Galería de fotos", "Photo gallery"], "Pacotes": ["Paquetes", "Packages"], "Depoimentos": ["Testimonios", "Testimonials"], "Localização": ["Ubicación", "Location"], "WhatsApp flutuante": ["WhatsApp flotante", "Floating WhatsApp"], "Início": ["Inicio", "Home"], "Galeria": ["Galería", "Gallery"], "Essencial": ["Esencial", "Essential"], "Completo": ["Completo", "Complete"], "Sob consulta": ["A consultar", "On request"], "“Atendimento excelente e tudo entregue no prazo combinado.”": ["“Atención excelente y todo entregado en el plazo acordado.”", "“Excellent service and everything delivered on schedule.”"], "Cliente, depoimento de exemplo": ["Cliente, testimonio de ejemplo", "Client, sample testimonial"], "Seu endereço e horário de funcionamento": ["Tu dirección y horario de atención", "Your address and opening hours"], "Todos os direitos reservados": ["Todos los derechos reservados", "All rights reserved"], "estilo": ["estilo", "style"], "recurso": ["recurso", "feature"], "recursos": ["recursos", "features"], "Olá, Ricardo! Montei meu site no seu portfólio:": ["Hola, Ricardo! Armé mi sitio en tu portafolio:", "Hi Ricardo! I built my site on your portfolio:"], "Negócio": ["Negocio", "Business"], "nenhum por enquanto": ["ninguno por ahora", "none for now"], "Podemos conversar?": ["¿Podemos hablar?", "Can we talk?"], "Cor": ["Color", "Color"], "Outra cor": ["Otro color", "Other color"], "Escolher outra cor": ["Elegir otro color", "Pick another color"], "Olá, Ricardo! Vi seu portfólio e quero um site para o meu negócio.": ["Hola, Ricardo! Vi tu portafolio y quiero un sitio para mi negocio.", "Hi Ricardo! I saw your portfolio and I'd like a website for my business."], "Moda feminina": ["Moda femenina", "Women's fashion"], "Doceria": ["Dulcería", "Sweet shop"], "DJ e eventos": ["DJ y eventos", "DJ & events"], "Saúde e bem-estar": ["Salud y bienestar", "Health & wellness"], "Beleza e estética": ["Belleza y estética", "Beauty & aesthetics"], "Serviços e assistência": ["Servicios y asistencia", "Services & repair"], "Óptica": ["Óptica", "Optician"], "Assistência técnica": ["Servicio técnico", "Repair shop"], "Psicologia infantil": ["Psicología infantil", "Child psychology"], "Coleção nova": ["Nueva colección", "New collection"], "Looks que combinam com você": ["Looks que combinan contigo", "Looks that suit you"], "Peças selecionadas, com pedido direto pelo WhatsApp.": ["Prendas seleccionadas, con pedido directo por WhatsApp.", "Hand-picked pieces, ordered directly on WhatsApp."], "Pedir pelo WhatsApp": ["Pedir por WhatsApp", "Order on WhatsApp"], "Vestidos": ["Vestidos", "Dresses"], "Conjuntos": ["Conjuntos", "Sets"], "Promoções": ["Promociones", "Sales"], "Feito à mão": ["Hecho a mano", "Handmade"], "Doces que parecem presente": ["Dulces que parecen un regalo", "Sweets that feel like a gift"], "Bolos, caixas e lembrancinhas para cada ocasião.": ["Tortas, cajas y recuerdos para cada ocasión.", "Cakes, boxes and keepsakes for every occasion."], "Fazer encomenda": ["Hacer pedido", "Place an order"], "Bolos": ["Tortas", "Cakes"], "Brigadeiros": ["Brigadeiros", "Brigadeiros"], "Caixas": ["Cajas", "Boxes"], "Ao vivo": ["En vivo", "Live"], "A pista é sua. O som é nosso.": ["La pista es tuya. El sonido es nuestro.", "The dance floor is yours. The sound is ours."], "Casamentos, formaturas e eventos corporativos.": ["Bodas, graduaciones y eventos corporativos.", "Weddings, graduations and corporate events."], "Pedir orçamento": ["Pedir presupuesto", "Request a quote"], "Casamentos": ["Bodas", "Weddings"], "Formaturas": ["Graduaciones", "Graduations"], "Corporativo": ["Corporativo", "Corporate"], "Exame e ajuste": ["Examen y ajuste", "Eye exam & fitting"], "Enxergue bem. Pareça melhor.": ["Ve bien. Luce mejor.", "See well. Look better."], "Armações, lentes e joias com atendimento personalizado.": ["Monturas, lentes y joyas con atención personalizada.", "Frames, lenses and jewelry with personal service."], "Agendar visita": ["Agendar visita", "Book a visit"], "Armações": ["Monturas", "Frames"], "Lentes": ["Lentes", "Lenses"], "Joias": ["Joyas", "Jewelry"], "Reparo no mesmo dia": ["Reparación el mismo día", "Same-day repair"], "Seu celular novo de novo": ["Tu celular como nuevo", "Your phone, good as new"], "Troca de tela, bateria e diagnóstico rápido.": ["Cambio de pantalla, batería y diagnóstico rápido.", "Screen and battery replacement and quick diagnosis."], "Telas": ["Pantallas", "Screens"], "Baterias": ["Baterías", "Batteries"], "Diagnóstico": ["Diagnóstico", "Diagnostics"], "Cuidado com carinho": ["Cuidado con cariño", "Care with kindness"], "Um espaço seguro para crescer": ["Un espacio seguro para crecer", "A safe space to grow"], "Atendimento psicológico infantil com escuta e acolhimento.": ["Atención psicológica infantil con escucha y acogida.", "Child psychology care with listening and warmth."], "Agendar conversa": ["Agendar conversación", "Book a conversation"], "Crianças": ["Niños", "Children"], "Famílias": ["Familias", "Families"], "Escolas": ["Escuelas", "Schools"], "Novidades": ["Novedades", "New in"], "Coleções": ["Colecciones", "Collections"], "Contato": ["Contacto", "Contact"], "Cardápio": ["Menú", "Menu"], "Encomendas": ["Pedidos", "Orders"], "Eventos": ["Eventos", "Events"], "Agenda": ["Agenda", "Schedule"], "Orçamento": ["Presupuesto", "Quote"], "Atendimento": ["Atención", "Care"], "Atendimento humanizado": ["Atención humanizada", "Compassionate care"], "Cuidado que acolhe de verdade": ["Cuidado que acoge de verdad", "Care that truly welcomes you"], "Agende sua consulta de forma simples e rápida.": ["Agenda tu consulta de forma simple y rápida.", "Book your appointment quickly and easily."], "Agendar consulta": ["Agendar consulta", "Book an appointment"], "Consultas": ["Consultas", "Appointments"], "Convênios": ["Convenios", "Insurance"], "Seu momento": ["Tu momento", "Your moment"], "Realce o que você tem de melhor": ["Realza lo mejor de ti", "Bring out your best"], "Procedimentos com hora marcada e atendimento exclusivo.": ["Tratamientos con cita previa y atención exclusiva.", "Treatments by appointment with exclusive service."], "Reservar horário": ["Reservar horario", "Book a time"], "Cabelo": ["Cabello", "Hair"], "Unhas": ["Uñas", "Nails"], "Estética": ["Estética", "Aesthetics"], "Atendimento no mesmo dia": ["Atención el mismo día", "Same-day service"], "Resolvemos sem enrolação": ["Lo resolvemos sin rodeos", "We fix it, no runaround"], "Peça um orçamento rápido pelo WhatsApp.": ["Pide un presupuesto rápido por WhatsApp.", "Get a quick quote on WhatsApp."], "Reparos": ["Reparaciones", "Repairs"], "Manutenção": ["Mantenimiento", "Maintenance"], "Veja um site nascendo.": ["Mira cómo nace un sitio.", "Watch a site being born."], "Cada linha de código vira uma parte do site, na hora.": ["Cada línea de código se convierte en una parte del sitio, al instante.", "Each line of code becomes a part of the site, instantly."], "Cardápio · Encomendas": ["Menú · Pedidos", "Menu · Orders"], "Pedidos direto pelo WhatsApp": ["Pedidos directo por WhatsApp", "Orders straight on WhatsApp"], "Encomendar": ["Pedir", "Order"], "No ar": ["En línea", "Online"], "Ver de novo": ["Ver de nuevo", "Watch again"], "Exemplo ilustrativo com um negócio fictício.": ["Ejemplo ilustrativo con un negocio ficticio.", "Illustrative example with a fictional business."], "Código sendo digitado": ["Código escribiéndose", "Code being typed"], "Sobre mim": ["Sobre mí", "About me"], "Crio sites com foco em design, experiência do usuário, responsividade e conversão, garantindo que a página funcione bem tanto no computador quanto no celular.": ["Creo sitios con foco en diseño, experiencia de usuario, adaptación a móviles y conversión, asegurando que la página funcione bien tanto en computadora como en celular.", "I build sites focused on design, user experience, responsiveness and conversion, making sure the page works well on both desktop and phone."], "Além da parte técnica, tenho experiência com vendas e atendimento, o que me ajuda a enxergar o projeto pelo ponto de vista do negócio. Procuro entender o objetivo do cliente e construir um site que realmente faça sentido para a empresa.": ["Además de la parte técnica, tengo experiencia en ventas y atención al cliente, lo que me ayuda a ver el proyecto desde el punto de vista del negocio. Busco entender el objetivo del cliente y construir un sitio que realmente tenga sentido para la empresa.", "Beyond the technical side, I have experience in sales and customer service, which helps me see the project from the business's point of view. I aim to understand the client's goal and build a site that truly makes sense for the company."], "Design": ["Diseño", "Design"], "Visual alinhado à identidade da marca": ["Visual alineado con la identidad de la marca", "Visuals aligned with the brand identity"], "Experiência do usuário": ["Experiencia de usuario", "User experience"], "Navegação simples e clara": ["Navegación simple y clara", "Simple, clear navigation"], "Responsividade": ["Adaptación a pantallas", "Responsiveness"], "Funciona no computador e no celular": ["Funciona en computadora y celular", "Works on desktop and phone"], "Conversão": ["Conversión", "Conversion"], "Páginas pensadas para gerar contato": ["Páginas pensadas para generar contacto", "Pages designed to generate leads"], "Como eu trabalho": ["Cómo trabajo", "How I work"], "Do primeiro contato ao site no ar.": ["Del primer contacto al sitio en línea.", "From first contact to a live site."], "Conversa": ["Conversación", "Conversation"], "Entendo o objetivo do negócio, o público e o que o site precisa fazer.": ["Entiendo el objetivo del negocio, el público y lo que el sitio necesita lograr.", "I understand the business goal, the audience and what the site needs to do."], "Visual personalizado, alinhado à identidade da marca.": ["Visual personalizado, alineado con la identidad de la marca.", "Custom visuals aligned with the brand identity."], "Desenvolvimento": ["Desarrollo", "Development"], "Site rápido e responsivo, com WhatsApp e Instagram integrados.": ["Sitio rápido y adaptable, con WhatsApp e Instagram integrados.", "Fast, responsive site with WhatsApp and Instagram integrated."], "Página publicada e pronta para gerar contato com clientes.": ["Página publicada y lista para generar contacto con clientes.", "Page published and ready to generate customer contact."], "A diferença na prática": ["La diferencia en la práctica", "The difference in practice"], "O mesmo negócio, duas presenças na internet.": ["El mismo negocio, dos presencias en internet.", "The same business, two online presences."], "Arraste a barra e veja o que muda quando o site passa confiança e leva o cliente até o contato.": ["Arrastra la barra y mira qué cambia cuando el sitio transmite confianza y lleva al cliente hasta el contacto.", "Drag the bar and see what changes when the site inspires trust and leads the customer to get in touch."], "Bem vindo ao site da Doce Ateliê!!!": ["¡¡¡Bienvenidos al sitio de Doce Ateliê!!!", "Welcome to the Doce Ateliê website!!!"], "clique aqui para ver nossos doces": ["haz clic aquí para ver nuestros dulces", "click here to see our sweets"], "Fazemos bolos, brigadeiros e muito mais. Ligue e pergunte!!": ["Hacemos tortas, brigadeiros y mucho más. ¡¡Llama y pregunta!!", "We make cakes, brigadeiros and much more. Call and ask!!"], "siga no instagram": ["síguenos en instagram", "follow us on instagram"], "Bolos, caixas e lembrancinhas feitos à mão, com pedido direto pelo WhatsApp.": ["Tortas, cajas y recuerdos hechos a mano, con pedido directo por WhatsApp.", "Handmade cakes, boxes and keepsakes, ordered directly on WhatsApp."], "Fazer minha encomenda": ["Hacer mi pedido", "Place my order"], "Presença amadora": ["Presencia amateur", "Amateur presence"], "Presença profissional": ["Presencia profesional", "Professional presence"], "Comparar antes e depois do site": ["Comparar el antes y el después del sitio", "Compare the site before and after"], "O que eu faço": ["Lo que hago", "What I do"], "Sites institucionais": ["Sitios institucionales", "Corporate websites"], "Sites responsivos para celular": ["Sitios adaptados al celular", "Mobile-friendly responsive websites"], "Sites para empresas e negócios locais": ["Sitios para empresas y negocios locales", "Websites for companies and local businesses"], "Páginas focadas em conversão": ["Páginas enfocadas en conversión", "Conversion-focused pages"], "Integração com WhatsApp, Instagram e outras ferramentas": ["Integración con WhatsApp, Instagram y otras herramientas", "Integration with WhatsApp, Instagram and other tools"], "Sites rápidos e modernos": ["Sitios rápidos y modernos", "Fast, modern websites"], "Design personalizado de acordo com a identidade da marca": ["Diseño personalizado según la identidad de la marca", "Custom design that follows the brand identity"], "Sites responsivos": ["Sitios adaptables", "Responsive sites"], "Negócios locais": ["Negocios locales", "Local businesses"], "WhatsApp e Instagram": ["WhatsApp e Instagram", "WhatsApp and Instagram"], "Rápidos e modernos": ["Rápidos y modernos", "Fast and modern"], "Design personalizado": ["Diseño personalizado", "Custom design"], "Meu objetivo": ["Mi objetivo", "My goal"], "Chamar no WhatsApp": ["Escribir por WhatsApp", "Message on WhatsApp"], "Copiar": ["Copiar", "Copy"], "Copiado": ["Copiado", "Copied"], "Selecionado": ["Seleccionado", "Selected"], "Chamar Ricardo no WhatsApp": ["Escribir a Ricardo por WhatsApp", "Message Ricardo on WhatsApp"], "Ricardo Soares · Desenvolvedor web": ["Ricardo Soares · Desarrollador web", "Ricardo Soares · Web developer"]};
+  var lang = 'pt', cbs = [], nodes = [], attrs = [];
+  try {
+    var sv = localStorage.getItem('rs-lang');
+    if (sv === 'pt' || sv === 'es' || sv === 'en') lang = sv;
+    else { var nl = ((navigator.language || 'pt') + '').slice(0, 2).toLowerCase(); if (nl === 'es' || nl === 'en') lang = nl; }
+  } catch (e) {}
+  function t(s) { var d = D[s]; if (!d || lang === 'pt') return s; return d[lang === 'es' ? 0 : 1] || s; }
+  var EXC = 'script,style,pre,#site,#mk-site,#track,#chips,#mk-seg,#mk-sty,#mk-fea,#mk-col,#s-links,#s-brand,.hero h1,#lit,.quote,#copy,#mk-sum,.hint,#intro .iname';
+  function skip(el) { return !el || !!(el.closest && el.closest(EXC)); }
+  function scan() {
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())) {
+      var v = n.nodeValue, tr = v.trim();
+      if (!tr || !D[tr] || skip(n.parentNode)) continue;
+      var at = v.indexOf(tr);
+      nodes.push({ n: n, k: tr, pre: v.slice(0, at), post: v.slice(at + tr.length) });
+    }
+    [].forEach.call(document.querySelectorAll('[aria-label],[placeholder]'), function (el) {
+      if (skip(el.parentNode)) return;
+      ['aria-label', 'placeholder'].forEach(function (a) { var v = el.getAttribute(a); if (v && D[v]) attrs.push({ el: el, a: a, k: v }); });
+    });
+  }
+  function paint() {
+    nodes.forEach(function (o) { o.n.nodeValue = o.pre + t(o.k) + o.post; });
+    attrs.forEach(function (o) { o.el.setAttribute(o.a, t(o.k)); });
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+    [].forEach.call(document.querySelectorAll('.lang button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-l') === lang ? 'true' : 'false'); });
+  }
+  function set(l) {
+    lang = l; try { localStorage.setItem('rs-lang', l); } catch (e) {}
+    paint();
+    cbs.forEach(function (f) { try { f(); } catch (e) { if (window.console) console.error(e); } });
+  }
+  function init() {
+    scan(); paint();
+    [].forEach.call(document.querySelectorAll('.lang button'), function (b) { b.addEventListener('click', function () { set(b.getAttribute('data-l')); }); });
+  }
+  function missing() {
+    var out = [], w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())) { var tr = n.nodeValue.trim(); if (tr && /[a-zA-ZÀ-ú]{3}/.test(tr) && !D[tr] && !skip(n.parentNode)) out.push(tr.slice(0, 60)); }
+    return out;
+  }
+  return { t: t, lang: function () { return lang; }, on: function (f) { cbs.push(f); }, set: set, init: init, missing: missing };
+})();
+</script>
+<script>
 (function () {
   var WHATSAPP = '5581997124640';
+  var T = I18N.t;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(pointer: fine)').matches;
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return document.querySelectorAll(s); };
 
   /* WhatsApp */
-  var msg = 'Olá, Ricardo! Vi seu portfólio e quero um site para o meu negócio.';
-  $$('[data-wa]').forEach(function (a) {
-    a.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
-    a.target = '_blank'; a.rel = 'noopener';
-  });
+  function setWa() {
+    var msg = T('Olá, Ricardo! Vi seu portfólio e quero um site para o meu negócio.');
+    $$('[data-wa]').forEach(function (a) {
+      a.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
+      a.target = '_blank'; a.rel = 'noopener';
+    });
+  }
+  setWa();
+  $('#copy').textContent = T('Copiar');
   $('#copy').addEventListener('click', function () {
     var b = this, t = '(81) 99712-4640';
-    function ok() { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = 'Copiar'; }, 1600); }
+    function ok() { b.textContent = T('Copiado'); setTimeout(function () { b.textContent = T('Copiar'); }, 1600); }
     try { navigator.clipboard.writeText(t).then(ok, sel); } catch (e) { sel(); }
-    function sel() { var r = document.createRange(); r.selectNodeContents($('#numtxt')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selecionado'; setTimeout(function () { b.textContent = 'Copiar'; }, 1600); }
+    function sel() { var r = document.createRange(); r.selectNodeContents($('#numtxt')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = T('Selecionado'); setTimeout(function () { b.textContent = T('Copiar'); }, 1600); }
   });
 
   /* abertura */
@@ -948,22 +1035,26 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
   ];
   var site = $('#site'), sin = $('#s-in'), chipsEl = $('#chips');
   var idx = 0, timer = null;
-  NICHES.forEach(function (n, i) {
-    var b = document.createElement('button');
-    b.type = 'button'; b.className = 'chip'; b.textContent = n.label; b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
-    b.addEventListener('click', function () { stop(); show(i); });
-    chipsEl.appendChild(b);
-  });
+  function buildChips() {
+    chipsEl.innerHTML = '';
+    NICHES.forEach(function (n, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.textContent = T(n.label); b.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+      b.addEventListener('click', function () { stop(); show(i); });
+      chipsEl.appendChild(b);
+    });
+  }
+  buildChips();
   function show(i) {
     idx = i; var n = NICHES[i], v = n.v;
     site.style.setProperty('--sbg', v.bg); site.style.setProperty('--sfg', v.fg);
     site.style.setProperty('--sac', v.ac); site.style.setProperty('--sac2', v.ac2);
     site.style.setProperty('--sctr', v.ctr); site.style.setProperty('--sfont', v.font);
     $('#s-brand').textContent = n.brand;
-    $('#s-links').innerHTML = n.links.map(function (l) { return '<span>' + l + '</span>'; }).join('');
+    $('#s-links').innerHTML = n.links.map(function (l) { return '<span>' + T(l) + '</span>'; }).join('');
     $('#url').textContent = n.url;
     var el = document.createElement('div'); el.className = 's-in'; el.id = 's-in';
-    el.innerHTML = '<div class="s-hero"><div class="s-copy"><small>' + n.tag + '</small><h4>' + n.h + '</h4><p>' + n.p + '</p><span class="s-cta">' + n.cta + '</span></div><div class="s-art"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div></div><div class="s-cards">' + n.cards.map(function (c) { return '<div>' + c + '</div>'; }).join('') + '</div>';
+    el.innerHTML = '<div class="s-hero"><div class="s-copy"><small>' + T(n.tag) + '</small><h4>' + T(n.h) + '</h4><p>' + T(n.p) + '</p><span class="s-cta">' + T(n.cta) + '</span></div><div class="s-art"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div></div><div class="s-cards">' + n.cards.map(function (c) { return '<div>' + T(c) + '</div>'; }).join('') + '</div>';
     sin.replaceWith(el); sin = el;
     chipsEl.querySelectorAll('.chip').forEach(function (c, k) { c.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
   }
@@ -981,8 +1072,11 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
 
   /* faixa */
   var words = ['Sites institucionais', 'Landing pages', 'Sites responsivos', 'Negócios locais', 'Foco em conversão', 'WhatsApp e Instagram', 'Rápidos e modernos', 'Design personalizado'];
-  var half = words.map(function (w) { return '<span>' + w + '</span>'; }).join('');
-  $('#track').innerHTML = half + half;
+  function renderTrack() {
+    var half = words.map(function (w) { return '<span>' + T(w) + '</span>'; }).join('');
+    $('#track').innerHTML = half + half;
+  }
+  renderTrack();
 
   /* antes e depois */
   var cmp = $('#compare'), rng = $('#ba');
@@ -1073,6 +1167,7 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
       b.addEventListener('pointerleave', function () { b.style.transform = ''; });
     });
   }
+  I18N.on(function () { setWa(); buildChips(); show(idx); renderTrack(); $('#copy').textContent = T('Copiar'); });
 })();
 </script>
 
@@ -1151,9 +1246,20 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
   document.documentElement.addEventListener('mouseleave', function () { lens.style.opacity = 0; });
 
   /* ---------- título com onda de letras ---------- */
+  var T = I18N.t;
   var h1 = $('.hero h1'), chars = [];
-  if (h1) {
-    h1.setAttribute('aria-label', h1.textContent.replace(/\s+/g, ' ').trim());
+  var H1 = {
+    pt: { w: 'Sites que fazem sua empresa parecer tão profissional na internet quanto é na vida real.', hl: [6, 7] },
+    es: { w: 'Sitios web que hacen que tu empresa parezca tan profesional en internet como lo es en la vida real.', hl: [8, 9] },
+    en: { w: 'Websites that make your business look as professional online as it is in real life.', hl: [6, 7] }
+  };
+  function buildH1() {
+    if (!h1) return;
+    var d = H1[I18N.lang()];
+    h1.innerHTML = d.w.split(' ').map(function (w, i) {
+      return '<span class="w" style="--i:' + i + '">' + (d.hl.indexOf(i) > -1 ? '<span class="hl">' + w + '</span>' : w) + '</span>';
+    }).join(' ');
+    h1.setAttribute('aria-label', d.w);
     var walk = function (node) {
       [].slice.call(node.childNodes).forEach(function (n) {
         if (n.nodeType === 3) {
@@ -1166,6 +1272,7 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
     $$('.hero h1 .w').forEach(walk);
     chars = $$('.hero h1 .ch');
   }
+  buildH1();
   var wpend = false, wdirty = false;
   function wave(e) {
     if (!fine || reduce || wpend || !chars.length) return;
@@ -1183,16 +1290,17 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
   }
 
   /* ---------- código digitado, site aparece ao lado ---------- */
-  var LINES = [
+  function mkLines() { return [
     { s: 1, seg: [['t', '<header>']] },
-    { s: 2, seg: [['t', '  <h1>'], ['x', 'Doces que parecem presente'], ['t', '</h1>']] },
-    { s: 3, seg: [['t', '  <p>'], ['x', 'Pedidos direto pelo WhatsApp'], ['t', '</p>']] },
-    { s: 4, seg: [['t', '  <a '], ['a', 'class'], ['x', '='], ['s', '"btn"'], ['t', '>'], ['x', 'Encomendar'], ['t', '</a>']] },
+    { s: 2, seg: [['t', '  <h1>'], ['x', T('Doces que parecem presente')], ['t', '</h1>']] },
+    { s: 3, seg: [['t', '  <p>'], ['x', T('Pedidos direto pelo WhatsApp')], ['t', '</p>']] },
+    { s: 4, seg: [['t', '  <a '], ['a', 'class'], ['x', '='], ['s', '"btn"'], ['t', '>'], ['x', T('Encomendar')], ['t', '</a>']] },
     { s: 0, seg: [['t', '</header>']] },
     { s: 5, seg: [['c', ':root'], ['x', ' { '], ['a', '--accent'], ['x', ': '], ['s', '#d9532c'], ['x', '; }']] },
     { s: 6, seg: [['t', '<section '], ['a', 'class'], ['x', '='], ['s', '"cards"'], ['t', '>…</section>']] },
     { s: 7, seg: [['t', '<a '], ['a', 'href'], ['x', '='], ['s', '"wa.me/55…"'], ['t', ' />']] }
-  ];
+  ]; }
+  var LINES = mkLines();
   var code = $('#code'), pv = $('#pv'), okb = $('#ok'), tm = [];
   function stopT() { tm.forEach(clearTimeout); tm = []; }
   function resetLive() { code.innerHTML = ''; pv.classList.remove('themed'); $$('#pv [data-s]').forEach(function (e) { e.classList.remove('on'); }); okb.classList.remove('on'); }
@@ -1230,11 +1338,18 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
 
   /* ---------- texto que acende ao rolar ---------- */
   var lit = $('#lit'), lws = [];
-  if (lit) {
-    var words = lit.textContent.trim().split(/\s+/); lit.textContent = '';
-    words.forEach(function (w) { var sp = document.createElement('span'); sp.className = 'lw'; sp.textContent = w; lit.appendChild(sp); lit.appendChild(document.createTextNode(' ')); });
+  var LIT = {
+    pt: lit ? lit.textContent.trim() : '',
+    es: 'Soy desarrollador web y emprendedor, especializado en crear sitios web modernos, profesionales y personalizados para empresas y negocios. Mi trabajo es transformar la identidad y las necesidades de cada negocio en una presencia digital que transmita credibilidad, facilite el contacto con los clientes y ayude a generar nuevas oportunidades.',
+    en: "I'm a web developer and entrepreneur, specialized in building modern, professional, custom websites for companies and businesses. My job is to turn each business's identity and needs into a digital presence that conveys credibility, makes it easy for customers to get in touch and helps create new opportunities."
+  };
+  function buildLit() {
+    if (!lit) return;
+    lit.textContent = '';
+    LIT[I18N.lang()].split(/\s+/).forEach(function (w) { var sp = document.createElement('span'); sp.className = 'lw'; sp.textContent = w; lit.appendChild(sp); lit.appendChild(document.createTextNode(' ')); });
     lws = $$('#lit .lw');
   }
+  buildLit();
   function litUpdate() {
     if (!lws.length) return;
     var r = lit.getBoundingClientRect(), vh = innerHeight, n = lws.length;
@@ -1268,7 +1383,7 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
 
   /* ---------- monte seu site ---------- */
   (function () {
-    var WA = '5581997124640';
+    var WA = '5581997124640', T = I18N.t;
     var SEG = {
       moda: { label: 'Moda feminina', brand: 'Aurora Modas', tag: 'Coleção nova', h: 'Looks que combinam com você', p: 'Peças selecionadas, com pedido direto pelo WhatsApp.', cta: 'Pedir pelo WhatsApp', cards: ['Vestidos', 'Conjuntos', 'Promoções'] },
       doceria: { label: 'Doceria', brand: 'Doce Ateliê', tag: 'Feito à mão', h: 'Doces que parecem presente', p: 'Bolos, caixas e lembrancinhas para cada ocasião.', cta: 'Fazer encomenda', cards: ['Bolos', 'Brigadeiros', 'Caixas'] },
@@ -1287,19 +1402,20 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
     function lum(hex) { var n = parseInt(hex.slice(1), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255; return (.299 * r + .587 * g + .114 * b) / 255; }
     function slug(t) { return t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '') || 'seunegocio'; }
     function brand() { return st.name || SEG[st.seg].brand; }
+    function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
     var ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4.2A8 8 0 1 1 8.4 18.8z"/><path d="M9 9.5c.5 2.5 2.5 4.5 5.5 5.5l1-1.4-2-1-.8.7c-.8-.4-1.5-1.1-1.9-1.9l.7-.8-1-2z"/></svg>';
     function build() {
       var S = SEG[st.seg];
       site.innerHTML =
-        '<div class="mk-nav" style="--i:0"><b class="mk-brand"></b><span class="mk-links"><span>Início</span><span>Serviços</span><span>Contato</span></span><span class="mk-burger"></span></div>' +
-        '<div class="mk-hero" style="--i:1"><div class="mk-copy"><small>' + S.tag + '</small><h4>' + S.h + '</h4><p>' + S.p + '</p><span class="mk-cta">' + S.cta + '</span></div><div class="mk-art"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div></div>' +
-        '<div class="mk-cards" style="--i:2">' + S.cards.map(function (c) { return '<div>' + c + '</div>'; }).join('') + '</div>' +
-        '<div class="mk-sec mk-galeria" style="--i:3"><h5>Galeria</h5><div class="mk-gal">' + [0, 1, 2, 3, 4, 5].map(function (k) { return '<i style="--k:' + k + '"></i>'; }).join('') + '</div></div>' +
-        '<div class="mk-sec mk-pacotes" style="--i:4"><h5>Pacotes</h5><div class="mk-pk"><div><b>Essencial</b><small>Sob consulta</small></div><div><b>Completo</b><small>Sob consulta</small></div><div><b>Premium</b><small>Sob consulta</small></div></div></div>' +
-        '<div class="mk-sec mk-depo" style="--i:5"><h5>Depoimentos</h5><blockquote>“Atendimento excelente e tudo entregue no prazo combinado.”<cite>Cliente, depoimento de exemplo</cite></blockquote></div>' +
-        '<div class="mk-sec mk-local" style="--i:6"><h5>Localização</h5><div class="mk-map"><i></i><span>Seu endereço e horário de funcionamento</span></div></div>' +
+        '<div class="mk-nav" style="--i:0"><b class="mk-brand"></b><span class="mk-links"><span>' + T('Início') + '</span><span>' + T('Serviços') + '</span><span>' + T('Contato') + '</span></span><span class="mk-burger"></span></div>' +
+        '<div class="mk-hero" style="--i:1"><div class="mk-copy"><small>' + T(S.tag) + '</small><h4>' + T(S.h) + '</h4><p>' + T(S.p) + '</p><span class="mk-cta">' + T(S.cta) + '</span></div><div class="mk-art"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div></div>' +
+        '<div class="mk-cards" style="--i:2">' + S.cards.map(function (c) { return '<div>' + T(c) + '</div>'; }).join('') + '</div>' +
+        '<div class="mk-sec mk-galeria" style="--i:3"><h5>' + T('Galeria') + '</h5><div class="mk-gal">' + [0, 1, 2, 3, 4, 5].map(function (k) { return '<i style="--k:' + k + '"></i>'; }).join('') + '</div></div>' +
+        '<div class="mk-sec mk-pacotes" style="--i:4"><h5>' + T('Pacotes') + '</h5><div class="mk-pk"><div><b>' + T('Essencial') + '</b><small>' + T('Sob consulta') + '</small></div><div><b>' + T('Completo') + '</b><small>' + T('Sob consulta') + '</small></div><div><b>Premium</b><small>' + T('Sob consulta') + '</small></div></div></div>' +
+        '<div class="mk-sec mk-depo" style="--i:5"><h5>' + T('Depoimentos') + '</h5><blockquote>' + T('“Atendimento excelente e tudo entregue no prazo combinado.”') + '<cite>' + T('Cliente, depoimento de exemplo') + '</cite></blockquote></div>' +
+        '<div class="mk-sec mk-local" style="--i:6"><h5>' + T('Localização') + '</h5><div class="mk-map"><i></i><span>' + T('Seu endereço e horário de funcionamento') + '</span></div></div>' +
         '<div class="mk-sec mk-insta" style="--i:7"><h5>Instagram</h5><div class="mk-ig"><i></i><i></i><i></i><i></i><span>@seunegocio</span></div></div>' +
-        '<div class="mk-foot" style="--i:8"><b class="mk-brand"></b><small>Todos os direitos reservados</small></div>' +
+        '<div class="mk-foot" style="--i:8"><b class="mk-brand"></b><small>' + T('Todos os direitos reservados') + '</small></div>' +
         '<span class="mk-wa" aria-hidden="true">' + ICON + '</span>';
       brandText();
     }
@@ -1314,33 +1430,36 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
       $$('#mk-seg .chip').forEach(function (c) { c.setAttribute('aria-pressed', c.getAttribute('data-v') === st.seg ? 'true' : 'false'); });
       $$('#mk-sty .chip').forEach(function (c) { c.setAttribute('aria-pressed', c.getAttribute('data-v') === st.sty ? 'true' : 'false'); });
       $$('#mk-fea .chip').forEach(function (c) { c.setAttribute('aria-pressed', st.fea[c.getAttribute('data-v')] ? 'true' : 'false'); });
-      var pressedSw = false;
-      $$('#mk-col .sw').forEach(function (c) { var on = c.getAttribute('data-v') === st.col; if (on) pressedSw = true; c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
-      var n = feaKeys().length;
-      $('#mk-sum').innerHTML = '<span class="dot" style="background:' + st.col + '"></span><span>' + SEG[st.seg].label + ' · estilo ' + STY[st.sty].toLowerCase() + ' · ' + n + (n === 1 ? ' recurso' : ' recursos') + '</span>';
-      var msg = 'Olá, Ricardo! Montei meu site no seu portfólio:\n' +
-        '• Negócio: ' + SEG[st.seg].label + (st.name ? ' (' + st.name + ')' : '') + '\n' +
-        '• Estilo: ' + STY[st.sty] + '\n• Cor principal: ' + st.col + '\n' +
-        '• Recursos: ' + (n ? feaKeys().map(function (k) { return FEA[k]; }).join(', ') : 'nenhum por enquanto') + '\nPodemos conversar?';
+      $$('#mk-col .sw').forEach(function (c) { c.setAttribute('aria-pressed', c.getAttribute('data-v') === st.col ? 'true' : 'false'); });
+      var n = feaKeys().length, styL = T(STY[st.sty]).toLowerCase();
+      var styTxt = I18N.lang() === 'en' ? styL + ' ' + T('estilo') : T('estilo') + ' ' + styL;
+      $('#mk-sum').innerHTML = '<span class="dot" style="background:' + st.col + '"></span><span>' + esc(T(SEG[st.seg].label)) + ' · ' + esc(styTxt) + ' · ' + n + ' ' + T(n === 1 ? 'recurso' : 'recursos') + '</span>';
+      var msg = T('Olá, Ricardo! Montei meu site no seu portfólio:') + '\n' +
+        '• ' + T('Negócio') + ': ' + T(SEG[st.seg].label) + (st.name ? ' (' + st.name + ')' : '') + '\n' +
+        '• ' + T('Estilo') + ': ' + T(STY[st.sty]) + '\n• ' + T('Cor principal') + ': ' + st.col + '\n' +
+        '• ' + T('Recursos') + ': ' + (n ? feaKeys().map(function (k) { return T(FEA[k]); }).join(', ') : T('nenhum por enquanto')) + '\n' + T('Podemos conversar?');
       $('#mk-go').href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg);
     }
     function reveal(f) { var el = site.querySelector('.mk-' + f); if (el && !reduce) screen.scrollTo({ top: Math.max(0, el.offsetTop - 56), behavior: 'smooth' }); }
 
-    /* controles */
+    /* controles (reconstruídos ao trocar de idioma) */
     function chip(host, key, label, onClick) {
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = label; b.setAttribute('data-v', key); b.setAttribute('aria-pressed', 'false');
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = T(label); b.setAttribute('data-v', key); b.setAttribute('aria-pressed', 'false');
       b.addEventListener('click', function () { stopTour(); onClick(key); }); $(host).appendChild(b);
     }
-    Object.keys(SEG).forEach(function (k) { chip('#mk-seg', k, SEG[k].label, function (v) { st.seg = v; build(); restage(); apply(); screen.scrollTo({ top: 0 }); }); });
-    Object.keys(STY).forEach(function (k) { chip('#mk-sty', k, STY[k], function (v) { st.sty = v; restage(); apply(); }); });
-    Object.keys(FEA).forEach(function (k) { chip('#mk-fea', k, FEA[k], function (v) { st.fea[v] = st.fea[v] ? 0 : 1; apply(); if (st.fea[v]) reveal(v); }); });
-    COLORS.forEach(function (c) {
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'sw'; b.style.setProperty('--c', c); b.setAttribute('data-v', c); b.setAttribute('aria-label', 'Cor ' + c); b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', function () { stopTour(); st.col = c; apply(); }); $('#mk-col').appendChild(b);
-    });
-    var other = document.createElement('label'); other.className = 'swc'; other.title = 'Outra cor';
-    other.innerHTML = '<input type="color" id="mk-color" value="#e0457b" aria-label="Escolher outra cor">'; $('#mk-col').appendChild(other);
-    other.querySelector('input').addEventListener('input', function (e) { stopTour(); st.col = e.target.value; apply(); });
+    function controls() {
+      ['#mk-seg', '#mk-sty', '#mk-fea', '#mk-col'].forEach(function (h) { $(h).innerHTML = ''; });
+      Object.keys(SEG).forEach(function (k) { chip('#mk-seg', k, SEG[k].label, function (v) { st.seg = v; build(); restage(); apply(); screen.scrollTo({ top: 0 }); }); });
+      Object.keys(STY).forEach(function (k) { chip('#mk-sty', k, STY[k], function (v) { st.sty = v; restage(); apply(); }); });
+      Object.keys(FEA).forEach(function (k) { chip('#mk-fea', k, FEA[k], function (v) { st.fea[v] = st.fea[v] ? 0 : 1; apply(); if (st.fea[v]) reveal(v); }); });
+      COLORS.forEach(function (c) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'sw'; b.style.setProperty('--c', c); b.setAttribute('data-v', c); b.setAttribute('aria-label', T('Cor') + ' ' + c); b.setAttribute('aria-pressed', 'false');
+        b.addEventListener('click', function () { stopTour(); st.col = c; apply(); }); $('#mk-col').appendChild(b);
+      });
+      var other = document.createElement('label'); other.className = 'swc'; other.title = T('Outra cor');
+      other.innerHTML = '<input type="color" id="mk-color" value="' + st.col + '" aria-label="' + T('Escolher outra cor') + '">'; $('#mk-col').appendChild(other);
+      other.querySelector('input').addEventListener('input', function (e) { stopTour(); st.col = e.target.value; apply(); });
+    }
     nameIn.addEventListener('input', function () { stopTour(); st.name = nameIn.value.trim(); apply(); });
     $('#mk-modes').addEventListener('click', function (e) {
       var b = e.target.closest('button'); if (!b) return; stopTour();
@@ -1370,10 +1489,12 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
         }, 3200 * (i + 1)));
       });
     }
-    build(); restage(); apply();
-    var mkEl = $('#mk');
+    controls(); build(); restage(); apply();
+    I18N.on(function () { controls(); build(); restage(); apply(); });
+    /* observa o aparelho (que fica fixo no celular), não a seção inteira, que no celular é mais alta que a tela */
+    var mkEl = $('#mk-device');
     if ('IntersectionObserver' in window && !reduce) {
-      var mio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { mio.disconnect(); startTour(); } }); }, { threshold: .45 });
+      var mio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { mio.disconnect(); startTour(); } }); }, { threshold: .5 });
       mio.observe(mkEl);
     }
   })();
@@ -1385,11 +1506,12 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
     function upd() {
       var t = v.currentTime, txt = marks[0] ? marks[0][1] : '';
       marks.forEach(function (m) { if (t >= m[0]) txt = m[1]; });
-      if (txt !== cur) { cur = txt; label.textContent = txt; hint.classList.remove('sw'); void hint.offsetWidth; hint.classList.add('sw'); }
+      if (txt !== cur) { cur = txt; label.textContent = T(txt); hint.classList.remove('sw'); void hint.offsetWidth; hint.classList.add('sw'); }
       hint.classList.add('on');
     }
     v.addEventListener('timeupdate', upd);
-    if (reduce) { v.removeAttribute('autoplay'); v.pause(); hint.classList.add('on'); label.textContent = marks[0] ? marks[0][1] : ''; return; }
+    I18N.on(function () { if (hint.classList.contains('on')) { cur = ''; upd(); } });
+    if (reduce) { v.removeAttribute('autoplay'); v.pause(); hint.classList.add('on'); label.textContent = T(marks[0] ? marks[0][1] : ''); return; }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause(); }); }, { threshold: .25 }).observe(v);
     } else { var p0 = v.play(); if (p0 && p0.catch) p0.catch(function () {}); }
@@ -1418,5 +1540,20 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
     requestAnimationFrame(frame);
   }
   if (!reduce) requestAnimationFrame(frame);
+
+  /* ---------- troca de idioma: refaz o que é montado por JS ---------- */
+  I18N.on(function () {
+    buildH1(); buildLit(); litUpdate();
+    var q = $('.quote'); if (q) q.innerHTML = QUOTE[I18N.lang()];
+    stopT(); LINES = mkLines(); if (code.childNodes.length) showAll();
+  });
+  var QUOTE = {
+    pt: 'Criar sites que façam uma empresa parecer <em>tão profissional</em> na internet quanto ela é na vida real.',
+    es: 'Crear sitios que hagan que una empresa parezca <em>tan profesional</em> en internet como lo es en la vida real.',
+    en: 'Building websites that make a company look <em>as professional</em> online as it is in real life.'
+  };
+  { var q0 = $('.quote'); if (q0) q0.innerHTML = QUOTE[I18N.lang()]; }
+  { var mkSec = $('#monte'); if (mkSec && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { root.classList.toggle('in-mk', e.isIntersecting); }); }, { threshold: 0 }).observe(mkSec); }
 })();
 </script>
+<script>I18N.init();</script>
