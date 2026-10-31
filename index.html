@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Playfair+Display:wght@600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
-<script>document.documentElement.classList.add('js');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('has-intro');}catch(e){}</script>
+<script>document.documentElement.classList.add('js');try{if(!false)document.documentElement.classList.add('has-intro');}catch(e){}</script>
 <style>
 /* Layout: nav de vidro flutuante, hero com foto em vidro e chips orbitando, vitrine interativa, sobre com foto, processo com linha que desenha ao rolar, antes/depois, serviços e contato em painel de vidro. */
 :root {
@@ -610,7 +610,7 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
   .p-cards { padding-right: 0; }
   .p-wa { bottom: 90px; }
 }
-@media (prefers-reduced-motion: reduce) {
+@media not all {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .ch { transform: none !important; }
   .w, .lead, .cta-row, .num, .portrait { opacity: 1 !important; transform: none !important; filter: none !important; }
@@ -1018,7 +1018,7 @@ window.I18N = (function () {
 (function () {
   var WHATSAPP = '5581997124640';
   var T = I18N.t;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = false;
   var fine = window.matchMedia('(pointer: fine)').matches;
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return document.querySelectorAll(s); };
@@ -1210,7 +1210,7 @@ window.I18N = (function () {
   var root = document.documentElement;
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return [].slice.call(document.querySelectorAll(s)); };
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = false;
   var fine = matchMedia('(pointer: fine)').matches;
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
   var tmx = .5, tmy = .5, mx = .5, my = .5, px = -200, py = -200, lx = -200, ly = -200;
