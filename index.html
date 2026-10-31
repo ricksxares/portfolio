@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ricardo Soares · Desenvolvedor web">
+<meta property="og:description" content="Sites modernos, rápidos e personalizados para empresas e negócios locais. Web developer · Desarrollador web.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1020'/%3E%3Ctext x='32' y='43' font-size='30' font-family='Arial' font-weight='700' fill='white' text-anchor='middle'%3ERS%3C/text%3E%3C/svg%3E">
 <meta name="description" content="Ricardo Soares, desenvolvedor web: sites institucionais, landing pages e sites responsivos para empresas e negócios locais.">
 <title>Ricardo Soares</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -651,7 +657,7 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
           </a>
           <a class="btn glassy" data-mag href="#vitrine">Ver na prática</a>
         </div>
-        <p class="num">WhatsApp <b>(81) 99712-4640</b></p>
+        <p class="num">WhatsApp <b>+55 (81) 99712-4640</b></p>
       </div>
 
       <div class="portrait" id="portrait">
@@ -925,7 +931,7 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4.2A8 8 0 1 1 8.4 18.8z"/><path d="M9 9.5c.5 2.5 2.5 4.5 5.5 5.5l1-1.4-2-1-.8.7c-.8-.4-1.5-1.1-1.9-1.9l.7-.8-1-2z"/></svg>
           Chamar no WhatsApp
         </a>
-        <span class="numbox glass"><span id="numtxt">(81) 99712-4640</span><button type="button" id="copy">Copiar</button></span>
+        <span class="numbox glass"><span id="numtxt">+55 (81) 99712-4640</span><button type="button" id="copy">Copiar</button></span>
       </div>
     </div>
   </section>
@@ -1008,7 +1014,7 @@ window.I18N = (function () {
   setWa();
   $('#copy').textContent = T('Copiar');
   $('#copy').addEventListener('click', function () {
-    var b = this, t = '(81) 99712-4640';
+    var b = this, t = '+55 (81) 99712-4640';
     function ok() { b.textContent = T('Copiado'); setTimeout(function () { b.textContent = T('Copiar'); }, 1600); }
     try { navigator.clipboard.writeText(t).then(ok, sel); } catch (e) { sel(); }
     function sel() { var r = document.createRange(); r.selectNodeContents($('#numtxt')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = T('Selecionado'); setTimeout(function () { b.textContent = T('Copiar'); }, 1600); }
