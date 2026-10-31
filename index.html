@@ -458,6 +458,10 @@ footer { padding-block: 24px 40px; display: flex; justify-content: space-between
   .mk-modes { display: none; }
   .mk-device[data-mode="phone"] .mk-frame { width: 100%; border: 1px solid var(--glass-bd); border-radius: 22px; }
 }
+/* telefone sem quebra */
+.numbox, .numbox span { white-space: nowrap; }
+@media (max-width: 420px) { .numbox { font-size: 15px; gap: 8px; } .crow .btn { width: 100%; justify-content: center; } }
+@media (max-width: 380px) { .numbox { font-size: 14px; padding-inline: 12px 6px; } }
 /* idioma */
 .lang { display: flex; gap: 2px; padding: 3px; border-radius: 999px; border: 1px solid var(--glass-bd); background: var(--glass); }
 .lang button { border: 0; background: transparent; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .04em; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 999px; color: var(--muted); transition: background-color .25s, color .25s; }
@@ -931,6 +935,10 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4.2A8 8 0 1 1 8.4 18.8z"/><path d="M9 9.5c.5 2.5 2.5 4.5 5.5 5.5l1-1.4-2-1-.8.7c-.8-.4-1.5-1.1-1.9-1.9l.7-.8-1-2z"/></svg>
           Chamar no WhatsApp
         </a>
+        <a class="btn glassy" href="https://www.instagram.com/ricardosoares.jr/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @ricardosoares.jr">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".6"/></svg>
+          @ricardosoares.jr
+        </a>
         <span class="numbox glass"><span id="numtxt">+55 (81) 99712-4640</span><button type="button" id="copy">Copiar</button></span>
       </div>
     </div>
@@ -939,6 +947,7 @@ html.hs-on .hs-bar { display: block; width: min(1140px, calc(100vw - 32px)); hei
   <footer>
     <span>Ricardo Soares · Desenvolvedor web</span>
     <span>Sites para empresas e negócios locais</span>
+    <a href="https://www.instagram.com/ricardosoares.jr/" target="_blank" rel="noopener noreferrer" style="color:inherit">Instagram</a>
   </footer>
 </div>
 
